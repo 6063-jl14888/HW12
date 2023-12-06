@@ -6,7 +6,8 @@ let connectButton;
 let readyToReceive;
 
 // project variables
-let mElls = [];
+let waves = [];
+let waveCount = 0;
 
 function receiveSerial() {
   let line = mSerial.readUntil("\n");
@@ -21,21 +22,25 @@ function receiveSerial() {
 
   // get data from Serial string
   let data = JSON.parse(line).data;
-  let a0 = data.A0;
   let d2 = data.D2;
 
-  // use data to update project variables
   if (d2.isPressed) {
-    mElls.push({
-      x: random(width),
-      y: random(height),
-      c: map(d2.count % 20, 0, 20, 155, 255),
-      d: map(a0.value, 0, 4095, 20, 200),
-    });
+    createWave();
   }
 
-  // serial update
   readyToReceive = true;
+}
+
+function createWave() {
+  let newWave = {
+    x: width / 2,
+    y: height / 2,
+    diameter: map(waveCount % 20, 0, 20, 20, 600),
+    strokeWidth: 1,           
+    lifetime: 255,            
+  };
+  waves.push(newWave);
+  waveCount++;
 }
 
 function connectToSerial() {
@@ -64,10 +69,17 @@ function setup() {
 function draw() {
   // project logic
   background(0);
-  for (let i = 0; i < mElls.length; i++) {
-    let me = mElls[i];
-    fill(me.c, 0, 0);
-    ellipse(me.x, me.y, me.d, me.d);
+  for (let i = waves.length - 1; i >= 0; i--) {
+    let wave = waves[i];
+    noFill();  
+    stroke(255, wave.lifetime);  
+    strokeWeight(wave.strokeWidth); 
+    ellipse(wave.x, wave.y, wave.diameter, wave.diameter);
+
+
+    if (wave.lifetime <= 0) {
+      waves.splice(i, 1);
+    }
   }
 
   // update serial: request new data
