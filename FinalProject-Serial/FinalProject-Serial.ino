@@ -79,15 +79,17 @@ void loop() {
 
   prevD4Pressed = d4Pressed;
 
-
-  // check if there was a request for data, and if so, send new data
-  if (Serial.available() > 0) {
-    int byteIn = Serial.read();
-    if (byteIn == 0xAB) {
-      Serial.flush();
-      sendData();
-    }
-  }
+Serial.println{
+  String(d2Pressed) + " " + d3Pressed + " " + d4Pressed
+};
+  // // check if there was a request for data, and if so, send new data
+  // if (Serial.available() > 0) {
+  //   int byteIn = Serial.read();
+  //   if (byteIn == 0xAB) {
+  //     Serial.flush();
+  //     sendData();
+  //   }
+  // }
 
   delay(2);
 }

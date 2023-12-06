@@ -30,6 +30,7 @@ function receiveSerial() {
   let d2 = data.D2;
   let d3 = data.D3;
   let d4 = data.D4;
+  print(data);
 
 
   if (d2.isPressed) {
