@@ -1,21 +1,43 @@
 #include <ArduinoJson.h>
 
 // project variables
-int a0Val = 0;
-int d2Val = 0;
+
+bool d2Pressed = false;
 int d2ClickCount = 0;
 
-int prevD2Val = 0;
+bool prevD2Pressed = false;
+
+bool d3Pressed = false;
+int d3ClickCount = 0;
+
+bool prevD3Pressed = false;
+
+bool d4Pressed = false;
+int d4ClickCount = 0;
+
+bool prevD4Pressed = false;
+
+
 
 void sendData() {
   StaticJsonDocument<128> resJson;
   JsonObject data = resJson.createNestedObject("data");
-  JsonObject A0 = data.createNestedObject("A0");
-  JsonObject D2 = data.createNestedObject("D2");
 
-  A0["value"] = a0Val;
-  D2["isPressed"] = d2Val;
+  JsonObject D2 = data.createNestedObject("D2");
+  JsonObject D3 = data.createNestedObject("D3");
+  JsonObject D4 = data.createNestedObject("D4");
+
+
+
+  D2["isPressed"] = d2Pressed;
   D2["count"] = d2ClickCount;
+
+  D3["isPressed"] = d3Pressed;
+  D3["count"] = d3ClickCount;
+
+  D4["isPressed"] = d4Pressed;
+  D4["count"] = d4ClickCount;
+
 
   String resTxt = "";
   serializeJson(resJson, resTxt);
@@ -31,15 +53,32 @@ void setup() {
 
 void loop() {
   // read pins
-  a0Val = analogRead(A0);
-  d2Val = digitalRead(2);
+
+  d2Pressed = digitalRead(2);
+  d3Pressed = digitalRead(3);
+  d4Pressed = digitalRead(4);
+
 
   // calculate if d2 was clicked
-  if (d2Val && d2Val != prevD2Val) {
+  if (d2Pressed && !prevD2Pressed) {
     d2ClickCount++;
   }
 
-  prevD2Val = d2Val;
+  prevD2Pressed = d2Pressed;
+
+  // calculate if d3 was clicked
+  if (d3Pressed && !prevD3Pressed) {
+    d3ClickCount++;
+  }
+
+  prevD3Pressed = d3Pressed;
+
+  if (d4Pressed && !prevD4Pressed) {
+    d4ClickCount++;
+  }
+
+  prevD4Pressed = d4Pressed;
+
 
   // check if there was a request for data, and if so, send new data
   if (Serial.available() > 0) {
