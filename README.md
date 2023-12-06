@@ -10,4 +10,3 @@ In my logic, first, I need to input the two buttons I want to use into the code 
 ![image description](./2.png)
 ![image description](./3.png)
 ![image description](./4.png)
-![video description](./a.MOV)
