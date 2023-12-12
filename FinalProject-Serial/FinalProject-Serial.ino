@@ -15,25 +15,35 @@ bool prevD3Pressed = false;
 bool d4Pressed = false;
 int d4ClickCount = 0;
 
+bool prevD4Pressed = false;
+
 bool d5Pressed = false;
 int d5ClickCount = 0;
+
+bool prevD5Pressed = false;
 
 bool d6Pressed = false;
 int d6ClickCount = 0;
 
+bool prevD6Pressed = false;
+
 bool d7Pressed = false;
 int d7ClickCount = 0;
+
+bool prevD7Pressed = false;
 
 bool d8Pressed = false;
 int d8ClickCount = 0;
 
+bool prevD8Pressed = false;
 
-bool prevD4Pressed = false;
+
+
 
 
 
 void sendData() {
-  StaticJsonDocument<128> resJson;
+  StaticJsonDocument<768> resJson;
   JsonObject data = resJson.createNestedObject("data");
 
   JsonObject D2 = data.createNestedObject("D2");
@@ -75,7 +85,7 @@ void sendData() {
 
 void setup() {
   // Serial setup
-  Serial.begin(9600);
+  Serial.begin(57600);
   while (!Serial) {}
 }
 
@@ -92,61 +102,62 @@ void loop() {
 
 
   // calculate if d2 was clicked
-  if (d2Pressed && !prevD2Pressed) {
+  if (d2Pressed) {
     d2ClickCount++;
   }
 
   prevD2Pressed = d2Pressed;
 
   // calculate if d3 was clicked
-  if (d3Pressed && !prevD3Pressed) {
+  if (d3Pressed) {
     d3ClickCount++;
   }
 
   prevD3Pressed = d3Pressed;
 
-  if (d4Pressed && !prevD4Pressed) {
+  if (d4Pressed) {
     d4ClickCount++;
   }
 
   prevD4Pressed = d4Pressed;
 
-  if (d5Pressed && !prevD5Pressed) {
+  if (d5Pressed) {
     d5ClickCount++;
   }
 
   prevD5Pressed = d5Pressed;
 
-  if (d6Pressed && !prevD6Pressed) {
+  if (d6Pressed) {
     d6ClickCount++;
   }
 
   prevD6Pressed = d6Pressed;
 
-  if (d7Pressed && !prevD7Pressed) {
+  if (d7Pressed) {
     d7ClickCount++;
   }
 
   prevD7Pressed = d7Pressed;
 
-  if (d8Pressed && !prevD8Pressed) {
+  if (d8Pressed) {
     d8ClickCount++;
   }
 
   prevD8Pressed = d8Pressed;
 
 
-Serial.println{
-  String(d2Pressed) + " " + d3Pressed + " " + d4Pressed + " " + d5Pressed + " " + d6Pressed + " " + d7Pressed + " " + d8Pressed
-};
-  // // check if there was a request for data, and if so, send new data
-  // if (Serial.available() > 0) {
-  //   int byteIn = Serial.read();
-  //   if (byteIn == 0xAB) {
-  //     Serial.flush();
-  //     sendData();
-  //   }
-  // }
+// Serial.println(
+//   String(d2Pressed) + " " + d3Pressed + " " + d4Pressed + " " + d5Pressed + " " + d6Pressed + " " + d7Pressed + " " + d8Pressed
+// );
+
+  // check if there was a request for data, and if so, send new data
+  if (Serial.available() > 0) {
+    int byteIn = Serial.read();
+    if (byteIn == 0xAB) {
+      Serial.flush();
+      sendData();
+    }
+  }
 
   delay(2);
 }
