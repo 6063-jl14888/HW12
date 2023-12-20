@@ -1,3 +1,6 @@
+
+let mFont;
+let s0 = "| WaveDynamics |"
 // serial variables
 let mSerial;
 let connectButton;
@@ -40,6 +43,9 @@ let FREQS = {
   d7: 349,
   d8: 392,
 };
+function preload(){
+  mFont = loadFont("./Graphik-Thin.otf")
+}
 
 function createWave(_x, _count, _color) {
   let newWave = {
@@ -254,6 +260,7 @@ function setup() {
   // setup project
   createCanvas(windowWidth, windowHeight);
 
+
   // setup serial
   readyToReceive = false;
   mSerial = createSerial();
@@ -285,6 +292,14 @@ function draw() {
   // project logic
   background(0);
 
+  textFont(mFont);
+
+  textSize(80);
+  textAlign(CENTER);
+  text(s0, width / 2, 80);
+
+  fill(255)
+
   drawwave();
   // drawwave3();
   // drawwave4();
@@ -306,6 +321,7 @@ function draw() {
   if (mSerial.availableBytes() > 8) {
     receiveSerial();
   }
+
 }
 
 function drawwave() {
